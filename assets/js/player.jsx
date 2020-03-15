@@ -72,6 +72,12 @@ class Player extends Component {
         });
     };
 
+    PictureInPicture = () => {
+        this.setState({
+            
+        })
+    }
+
     handleVideoPlayback = (toggle, play) => {
         if (this.videoElement.current) {
             if (toggle) {
@@ -431,7 +437,7 @@ class Player extends Component {
                         <i
                             className="mdi mdi-light mdi-chevron-left mdi-36px"
                             onClick={this.closeClient}/>
-                        <div>{this.props.movie.show_title || this.props.movie.title}</div>
+                        <div>{this.props.movie.show_title || this.props.movie.title || "heya"}</div>
                         <i
                             className="open-backup mdi mdi-light mdi-sort-variant"
                             onClick={this.handleOpenBackup}/>
@@ -500,7 +506,7 @@ class Player extends Component {
                     onTimeUpdate={this.handleUpdate}
                     onWaiting={this.handleBuffer}
                     src={Number.isInteger(this.props.videoIndex)
-                    ? `http://localhost:8888/${this.props.videoIndex}`
+                    ? `http://localhost:6969/${this.props.videoIndex}`
                     : ""}
                     ref={this.videoElement}/>
             </div>

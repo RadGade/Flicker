@@ -694,6 +694,7 @@ class App extends Component {
 
     startWebTorrent = () => {
         let WebTorrent = require("webtorrent");
+        console.log('Fusion Drive Intiated')
         this.setState({
             client: new WebTorrent({maxConn: 150})
         }, () => {
@@ -996,7 +997,7 @@ class App extends Component {
                     this.server = torrent.createServer();
                     this
                         .server
-                        .listen("8888");
+                        .listen("6969");
 
                     this
                         .fetchFirstPieces(torrent, file)
@@ -1272,7 +1273,7 @@ class App extends Component {
                 let publicSearch = this
                     .publicSearch
                     .search([
-                        "1337x", "Rarbg"
+                        "1337x","Rarbg", "The Pirate Bay", "YTS", 
                     ], query, show
                         ? "TV"
                         : "Movies", 20);
@@ -2100,13 +2101,14 @@ class App extends Component {
 
     startFireBase = () => {
         let firebaseConfig = {
-            apiKey: "AIzaSyAOWT7w9hA8qsLY-KP7F14Qfv9vLjw3YJM",
-            authDomain: "flixerr-5aeb8.firebaseapp.com",
-            databaseURL: "https://flixerr-5aeb8.firebaseio.com",
-            projectId: "flixerr-5aeb8",
-            storageBucket: "flixerr-5aeb8.appspot.com",
-            messagingSenderId: "58493893285",
-            appId: "1:58493893285:web:b02990447eb9f16f"
+            apiKey: "AIzaSyDo7OZha1bOCuxbAMmcRAiIZLre-bN7sQk",
+            authDomain: "music-90b12.firebaseapp.com",
+            databaseURL: "https://music-90b12.firebaseio.com",
+            projectId: "music-90b12",
+            storageBucket: "music-90b12.appspot.com",
+            messagingSenderId: "936905415859",
+            appId: "1:936905415859:web:9ecb81ac9ddd558ae124c6",
+            measurementId: "G-2ZNPB48CF0"
         };
 
         firebase.initializeApp(firebaseConfig);

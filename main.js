@@ -23,9 +23,9 @@ function createWindow() {
         height: mainWindowState.height,
         minWidth: 1128,
         minHeight: 680,
-        maximizable: false,
+        maximizable: true,
         title: 'Flixerr',
-        icon: __dirname + '/assets/imgs/icon.ico',
+        icon: __dirname + './assets/imgs/icon.ico',
         backgroundColor: '#5d16fd',
         titleBarStyle: 'hiddenInset',
         show: false,
@@ -39,12 +39,7 @@ function createWindow() {
         .webContents
         .session
         .webRequest
-        .onHeadersReceived({}, (details, callback) => {
-            if (details.responseHeaders['x-frame-options']) {
-                delete details.responseHeaders['x-frame-options'];
-            }
-            callback({cancel: false, responseHeaders: details.responseHeaders});
-        });
+
 
     mainWindowState.manage(mainWindow);
 

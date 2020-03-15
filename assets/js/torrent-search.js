@@ -11,25 +11,28 @@ let TorrentSearch = function () {
     let providers = [
         {
             name: "The Pirate Bay",
-            url: "https://thepiratebay3.org/index.php?q=",
+            url: "https://www.pirate-bay.net/search?q=",
+            forShows: true,
             queryFunction: (query) => {
-                return `${encodeURI(query)}&video=on&category=0&page=0&orderby=99`;
+                return `${encodeURI(query)}`;
             }
         }, {
             name: "YTS",
+            forShows: true,
             url: "https://yts.lt/movie/",
             queryFunction: (query) => {
                 return query.replace(/[^A-Za-z0-9]/g, '-');
             }
         }, {
             name: "EZTV",
-            url: "https://eztv.yt/search/",
+            url: "https://eztv.io/search/",
             forShows: true,
             queryFunction: (query) => {
                 return encodeURI(query);
             }
         }, {
             name: "1337x",
+            forShows: true,
             url: "https://www.1377x.to/search/",
             queryFunction: (query) => {
                 return `${encodeURI(query)}/1/`
@@ -146,6 +149,7 @@ let TorrentSearch = function () {
     let getMagnetLinks = (html) => {
         let $ = cheerio.load(html);
         let magnetLinks = $("a").filter((index, element) => {
+            console.log($(element).attr("href").indexOf("magnet:?xt=urn:") > -1)
             return ($(element).attr("href").indexOf("magnet:?xt=urn:") > -1);
         });
 

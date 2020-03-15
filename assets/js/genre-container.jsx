@@ -190,7 +190,7 @@ class GenreContainer extends Component {
                 shows={this.props.shows}
                 movie={movie}
                 openBox={this.props.openBox}
-                key={movie.title + index + 'genre'}/>));
+                key={index + 'genre'}/>));
         let n = this.props.shows ? 340 : this.props.genreInfo.movies.length
             ? 470
             : 100;
