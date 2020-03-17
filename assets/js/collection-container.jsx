@@ -19,6 +19,9 @@ class Collection extends Component {
                 }, {
                     name: "Favorites",
                     target: "favorites"
+                },{
+                    name: "Watch Later",
+                    target: "WatchLater"
                 }
             ]
         };
@@ -51,7 +54,7 @@ class Collection extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.suggested === this.props.suggested && nextProps.favorites === this.props.favorites && nextProps.recentlyPlayed === this.props.recentlyPlayed) {
+        if (nextProps.suggested === this.props.suggested && nextProps.favorites === this.props.favorites && nextProps.recentlyPlayed === this.props.recentlyPlayed && nextProps.WatchLater === this.props.WatchLater) {
             return false;
         } else {
             return true;

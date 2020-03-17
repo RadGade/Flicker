@@ -10,7 +10,7 @@ const { autoUpdater } = require("electron-updater");
 
 let mainWindow;
 
-process.FLIXERR_DEVELOP = false;
+process.FLIXERR_DEVELOP = true;
 
 function createWindow() {
 

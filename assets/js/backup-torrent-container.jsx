@@ -47,6 +47,7 @@ class BackupTorrents extends Component {
                 .torrents
                 .map((torrent) => {
                     let title = torrent.title;
+                    let seeder = torrent.seeder;
                     let videoQuality = torrent.resolution || torrent.quality;
 
                     return (<Torrent
@@ -59,6 +60,7 @@ class BackupTorrents extends Component {
                         : ""}`}
                         videoQuality={videoQuality}
                         title={title}
+                        seeder={seeder}
                         handleTorrentClick={this.props.handleTorrentClick}/>);
                 })
             : "";

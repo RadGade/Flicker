@@ -49,12 +49,14 @@ class App extends Component {
             isGuest: false,
             loadingContent: false,
             downloadPercent: false,
+            peers : 0,
             downloadSpeed: 0,
             fileLoaded: 0,
             active: "Featured",
             suggested: [],
             recentlyPlayed: [],
             favorites: [],
+            WatchLater: [],
             movieTimeArray: [],
             magnetArray: [],
             featured: [],
@@ -267,6 +269,7 @@ class App extends Component {
                 recentlyPlayed: this.cleanMovieArrays(this.state.recentlyPlayed),
                 movieTimeArray: this.cleanMovieArrays(this.state.movieTimeArray),
                 favorites: this.cleanMovieArrays(this.state.favorites),
+                WatchLater: this.cleanMovieArrays(this.state.WatchLater),
                 quality: this.state.quality
                     ? this.state.quality
                     : "HD"
@@ -341,7 +344,7 @@ class App extends Component {
     };
 
     setDiff = (data) => {
-        let change = ["favorites", "recentlyPlayed", "movieTimeArray", "quality"];
+        let change = ["favorites", "WatchLater", "recentlyPlayed", "movieTimeArray", "quality"];
         return new Promise((resolve, reject) => {
             let newState = {};
             for (let i = 0; i < change.length; i++) {
@@ -449,6 +452,7 @@ class App extends Component {
     setStorage = () => {
         storage.set("collection", {
             favorites: this.state.favorites,
+            WatchLater: this.state.WatchLater,
             recentlyPlayed: this.state.recentlyPlayed,
             movieTimeArray: this.state.movieTimeArray,
             quality: this.state.quality
@@ -492,6 +496,9 @@ class App extends Component {
                         this.setState({
                             favorites: data.favorites
                                 ? data.favorites
+                                : [],
+                            WatchLater: data.WatchLater
+                                ? data.WatchLater
                                 : [],
                             recentlyPlayed: data.recentlyPlayed
                                 ? data.recentlyPlayed
@@ -941,6 +948,7 @@ class App extends Component {
             torrent.on("ready", () => {
                 this.setFileLoadedTimeout();
                 this.setPlayerStatus("Retrieving from the owl postal service", true);
+                this.setState({peers : torrent.numPeers})
                 torrent.deselect(0, torrent.pieces.length - 1, false);
 
                 for (let i = 0; i < torrent.files.length; i++) {
@@ -972,8 +980,7 @@ class App extends Component {
 
                 filtered.sort((a, b) => {
                     return b.length - a.length;
-                });
-
+                })
                 this.getSubtitles();
 
                 let file = filtered[0];
@@ -1010,6 +1017,8 @@ class App extends Component {
                         });
                 }
             });
+
+            torrent.on('error', err => this.setPlayerStatus(err, true))
         } else {
             this.destroyClient();
         }
@@ -1386,6 +1395,7 @@ class App extends Component {
                     videoIndex: false,
                     videoElement: false,
                     downloadPercent: false,
+                    peers : 0,
                     isStreaming: false,
                     paused: true,
                     playerLoading: backUp
@@ -1631,8 +1641,7 @@ class App extends Component {
         let url = `https://api.themoviedb.org/3/discover/movie?api_key=${
         this
             .state
-            .apiKey}&region=US&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&release_date.lte=${this
-            .getURLDate(1)}`;
+            .apiKey}&region=US&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false&page=1`;
         return new Promise((resolve, reject) => {
             this
                 .fetchContent(url)
@@ -1804,6 +1813,11 @@ class App extends Component {
         return this.returnCorrectMovie(clone, movie);
     };
 
+    isWatchLater = (movie) => {
+        let clone = this.getClone(this.state.WatchLater);
+        return this.returnCorrectMovie(clone, movie);
+    };
+
     chooseRandom = (array, limit) => {
         let results = [],
             clonedArray = this.getClone(array);
@@ -1819,7 +1833,7 @@ class App extends Component {
                 results.push(item);
             }
         }
-
+    
         return []
             .concat
             .apply([], results);
@@ -1953,6 +1967,19 @@ class App extends Component {
         });
     };
 
+    addtoWatchLater = (movie) => {
+        if (movie.show) {
+            movie = movie.show;
+        }
+
+        let clone = this.getClone(this.state.WatchLater);
+        clone.push(movie);
+        this.setState({
+            WatchLater: clone
+        }, () => {
+            this.setStorage();
+        });
+    };
     removeFromFavorites = (movie) => {
         if (movie.show) {
             movie = movie.show;
@@ -1968,7 +1995,21 @@ class App extends Component {
             this.setStorage();
         });
     };
+    DontWatchLater = (movie) => {
+        if (movie.show) {
+            movie = movie.show;
+        }
 
+        let clone = this.getClone(this.state.DontWatchLater);
+        let index = this.returnCorrectMovie(clone, movie, true);
+
+        clone.splice(index, 1);
+        this.setState({
+            WatchLater: clone
+        }, () => {
+            this.setStorage();
+        });
+    };
     addToRecentlyPlayed = (movie) => {
         let clone = this.getClone(this.state.recentlyPlayed);
         if (movie.show) {
@@ -2144,6 +2185,7 @@ class App extends Component {
         return new Promise((resolve, reject) => {
             this.setState({
                 favorites: [],
+                WatchLater: [],
                 recentlyPlayed: [],
                 suggested: [],
                 movieTimeArray: [],
@@ -2280,7 +2322,7 @@ class App extends Component {
     setHeaderBackground = (headerBg) => {
         this.setState({headerBg});
     };
-
+    
     componentDidMount() {
         this.loadLogo();
         this
@@ -2316,6 +2358,10 @@ class App extends Component {
                 favorites={this.state.favorites}
                 playMovie={this.playMovie}
                 isFavorite={this.isFavorite}
+                WatchLater={this.state.WatchLater}
+                isWatchLater={this.isWatchLater}
+                DontWatchLater={this.DontWatchLater}
+                addtoWatchLater={this.addtoWatchLater}
                 addToFavorites={this.addToFavorites}
                 removeFromFavorites={this.removeFromFavorites}
                 setTrailer={this.setTrailer}/>)
@@ -2325,6 +2371,7 @@ class App extends Component {
             ? (<Player
                 subtitleOptions={this.state.subtitleOptions}
                 fileLoaded={this.state.fileLoaded}
+                peers = {this.state.peers}
                 setFileLoaded={this.setFileLoaded}
                 setWillClose={this.setWillClose}
                 readyToClose={this.state.readyToClose}
@@ -2372,6 +2419,7 @@ class App extends Component {
                 extractMovies={this.extractMovies}
                 genreInfo={this.state.genreInfo}
                 favorites={this.state.favorites}
+                WatchLater={this.state.WatchLater}
                 recentlyPlayed={this.state.recentlyPlayed}
                 suggested={this.state.suggested}
                 apiKey={this.state.apiKey}
@@ -2483,6 +2531,7 @@ class App extends Component {
                             shows={this.state.shows}
                             suggested={this.state.suggested}
                             favorites={this.state.favorites}
+                            WatchLater={this.state.WatchLater}
                             recentlyPlayed={this.state.recentlyPlayed}
                             featured={this.state.featured}
                             toggleGenre={this.toggleGenre}

@@ -84,6 +84,18 @@ class MovieModal extends Component {
         }
     };
 
+    handleWatchLater = () => {
+        if (this.props.isWatchLater(this.props.movie)) {
+            this
+                .props
+                .DontWatchLater(this.props.movie);
+        } else {
+            this
+                .props
+                .addtoWatchLater(this.props.movie);
+        }
+    };
+
     formatNumber = (number) => {
         number = number.toString();
         let formatted = number.length === 1
@@ -162,7 +174,7 @@ class MovieModal extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.movie === nextProps.movie && this.props.favorites === nextProps.favorites && nextState.seasons === this.state.seasons && nextState.showSeasons === this.state.showSeasons && nextState.loading === this.state.loading && this.state.trailer === nextState.trailer) {
+        if (this.props.movie === nextProps.movie && this.props.favorites === nextProps.favorites && this.props.WatchLater === nextProps.WatchLater && nextState.seasons === this.state.seasons && nextState.showSeasons === this.state.showSeasons && nextState.loading === this.state.loading && this.state.trailer === nextState.trailer) {
             return false;
         } else {
             return true;
@@ -267,7 +279,15 @@ class MovieModal extends Component {
                                 .isFavorite(movie)
                                 ? "mdi-heart"
                                 : "mdi-heart-outline"}`}
-                                onClick={this.handleFavorites}/> {this.state.trailer
+                                onClick={this.handleFavorites}/> 
+                                <i
+                                className={`mdi ${isLightClass} ${this
+                                .props
+                                .isWatchLater(movie)
+                                ? "mdi-bookmark"
+                                : "mdi-bookmark-outline"}`}
+                                onClick={this.handleWatchLater}/> 
+                                {this.state.trailer
                                 ? <Fade mountOnEnter unmountOnExit distance="5%" bottom>
                                         <div className="movie-modal-view-trailer" onClick={this.handleViewTrailer}>View Trailer</div>
                                     </Fade>

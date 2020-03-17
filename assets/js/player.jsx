@@ -442,6 +442,7 @@ class Player extends Component {
                             className="open-backup mdi mdi-light mdi-sort-variant"
                             onClick={this.handleOpenBackup}/>
                     </div>
+                    <h3 className="peers">{this.props.peers} peers</h3>
                 </div>
                 <div className="bottom-bar-container">
                     <div className="bottom-bar">
