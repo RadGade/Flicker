@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-
+import regeneratorRuntime from "regenerator-runtime";
 import {CSSTransitionGroup} from "react-transition-group";
 import Fade from "react-reveal/Fade";
 import storage from "electron-json-storage";
@@ -631,6 +631,17 @@ class App extends Component {
         }
         this.togglePause(video.paused);
     };
+
+    handelPiP = async (video) => {
+        console.log('rubics');
+
+        try {
+            await video.requestPictureInPicture()
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
     handleVideoClose = (video) => {
         if (video.src) {
@@ -2400,6 +2411,7 @@ class App extends Component {
                 paused={this.state.paused}
                 removeClient={this.removeClient}
                 handleVideoClose={this.handleVideoClose}
+                handelPiP = {this.handelPiP}
                 setFullScreen={this.setFullScreen}
                 movie={this.state.playMovie}
                 getCurrentMagnet={this.getCurrentMagnet}

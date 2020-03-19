@@ -1,6 +1,6 @@
 {
   "name": "flixerr",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "A movie torrent streaming service.",
   "main": "main.js",
   "build": {
@@ -27,12 +27,13 @@
     }
   },
   "scripts": {
-    "start": "electron .",
+    "dev": "electron .",
     "compile": "babel ./assets/js --out-dir dist/js",
     "build": "electron-builder --dir",
     "build-all": "electron-builder --dir -mwl",
     "pack": "electron-builder",
-    "pack-all": "electron-builder -mwl",
+    "pack-all": "electron-builder -mwl -p always",
+    "publish-test": "npm run compile && npm run pack",
     "publish": "npm run compile && npm run pack"
   },
   "author": "Flixerr <rishiadhikari5@gmail.com>",
@@ -42,11 +43,13 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "electron": "^5.0.2",
-    "electron-builder": "^21.2.0",
+    "electron": "^8.1.1",
+    "electron-builder": "^22.4.1",
     "electron-notarize": "^0.1.1"
   },
   "dependencies": {
+    "@material-ui/core": "^4.9.7",
+    "@material-ui/icons": "^4.9.1",
     "accurate-interval": "^1.0.9",
     "axios": "^0.19.0",
     "babel-register": "^6.26.0",
@@ -58,7 +61,7 @@
     "electron-json-storage": "^4.1.6",
     "electron-squirrel-startup": "^1.0.0",
     "electron-titlebar": "0.0.3",
-    "electron-updater": "^4.2.0",
+    "electron-updater": "^4.2.5",
     "electron-window-state": "^5.0.3",
     "encoding": "^0.1.12",
     "fast-average-color": "^5.1.0",

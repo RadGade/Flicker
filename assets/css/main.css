@@ -1634,6 +1634,13 @@ video::-webkit-media-text-track-display {
     margin-right: 40px;
 }
 
+.movie-player > .bottom-bar-container > .bottom-bar > .pip-btn {
+    margin-right: 40px;
+    color: white;
+    font-size: 30px;
+    margin-top: 5px;
+}
+
 .movie-player > .bottom-bar-container > .bottom-bar > span {
     width: 60px;
     margin-right: 20px;
